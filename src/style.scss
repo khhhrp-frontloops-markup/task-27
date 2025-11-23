@@ -1,3 +1,7 @@
+html {
+  font-size: 10px;
+}
+
 *,
 *::after,
 *::before {
@@ -18,7 +22,332 @@ p {
 
 body {
   margin: 0;
-  min-height: 100dvh;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #303d4e;
+  font-size: 1.6rem;
+  align-content: center;
+  justify-items: center;
+  min-height: 100dvh;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 0.1rem;
+  height: 0.1rem;
+  margin: -0.1rem;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+$gray--900: #25262b;
+$gray--700: #515155;
+$gray--400: #c0c0c0;
+$light: #fff;
+$dark: #000;
+$accent-blue: #66a8f8;
+$accent-blue--dark: #4f8eda;
+$accent-green: #82cf68;
+
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2rem;
+  max-width: 76rem;
+  width: 100%;
+  background-color: $gray--900;
+  border-radius: 0.4rem;
+  padding: 2rem;
+  color: $light;
+  box-shadow: 0.1rem 0.3rem 1.4rem 0.3rem rgba($dark, 0.3);
+
+  &__header {
+    display: grid;
+    grid-template-columns: fit-content(40rem) 1fr min-content;
+    gap: 1rem;
+    padding-bottom: 2rem;
+    border-bottom: 0.1rem solid $gray--700;
+
+    & > * {
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__title {
+    font-size: 3rem;
+    font-weight: 700;
+    grid-column: 1 / 2;
+  }
+
+  &__badges {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+  }
+
+  &__badge {
+    font-size: 1.2rem;
+    padding: 0.6rem;
+    background-color: $gray--700;
+    font-weight: 500;
+    text-transform: uppercase;
+    border-radius: 0.4rem;
+    white-space: nowrap;
+  }
+
+  &__subtitle {
+    color: $gray--400;
+    grid-column: 1 / -1;
+  }
+
+  &__date {
+    font-size: 1.8rem;
+    grid-column: 1 / -1;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-top: 1.8rem;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2.4rem;
+    color: $gray--400;
+  }
+
+  &__price {
+    display: flex;
+    column-gap: 1rem;
+    align-items: center;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background-color: $accent-blue;
+      flex-shrink: 0;
+    }
+
+    &--vip {
+      &::before {
+        background-color: $accent-green;
+      }
+    }
+  }
+
+  &__btn {
+    font-size: 1.4rem;
+    border: none;
+    text-transform: uppercase;
+    background-color: $accent-blue;
+    color: $light;
+    padding: 1.2rem;
+    min-width: 15rem;
+    border-radius: 0.4rem;
+    transition: background-color 250ms ease;
+
+    @media (hover: hover) {
+      cursor: pointer;
+
+      &:hover {
+        background-color: $accent-blue--dark;
+      }
+    }
+  }
+}
+
+.close-btn {
+  padding: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-row: 1 / span 1;
+  grid-column: -2;
+  width: 4.4rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 0.2rem solid $gray--700;
+  transition: border-color 250ms ease;
+
+  span {
+    border-radius: 0.2rem;
+    position: absolute;
+    width: 2rem;
+    height: 0.2rem;
+    background-color: $gray--700;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    transition: background-color 250ms ease;
+
+    &:nth-child(1) {
+      rotate: 45deg;
+    }
+
+    &:nth-child(2) {
+      rotate: -45deg;
+    }
+  }
+
+  @media (hover: hover) {
+    cursor: pointer;
+
+    &:hover {
+      border-color: $light;
+
+      span {
+        background-color: $light;
+      }
+    }
+  }
+}
+
+.cinema {
+  padding-top: 4rem;
+
+  &__wrapper {
+    perspective: 10rem;
+  }
+
+  &__screen {
+    margin-inline: 6rem;
+    overflow: hidden;
+    height: 8rem;
+    box-shadow: 0 0.5rem 1.3rem 0 rgba($light, 0.3);
+    margin-bottom: 4rem;
+    transform: rotateX(-3deg);
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    margin-inline: 3rem;
+    padding-bottom: 6rem;
+    gap: 2rem;
+    counter-reset: row 0;
+    transform: rotateX(6deg);
+    border-bottom: 0.1rem solid $gray--700;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    place-items: center;
+    counter-increment: row 1;
+    counter-reset: seat 0;
+
+    &::before,
+    &::after {
+      content: counter(row);
+      grid-row: 1;
+      color: $gray--400;
+    }
+
+    &::before {
+      grid-column: 1;
+    }
+
+    &::after {
+      grid-column: -2;
+    }
+  }
+
+  &__label {
+    display: block;
+    position: relative;
+    width: 2rem;
+    border-radius: 50%;
+    background-color: $accent-blue;
+    aspect-ratio: 1;
+    grid-row: 1;
+    counter-increment: seat 1;
+    transition: background-color 250ms ease;
+
+    &::before {
+      content: counter(seat);
+      position: absolute;
+      inset: 0;
+      color: transparent;
+      text-align: center;
+      border-radius: inherit;
+      outline-color: transparent;
+      outline-offset: 0.3rem;
+      outline-style: solid;
+      transition-property: color, outline-color;
+      transition-duration: 250ms;
+      transition-timing-function: ease;
+    }
+
+    &--vip {
+      background-color: $accent-green;
+    }
+
+    @media (hover: hover) {
+      cursor: pointer;
+
+      &:hover {
+        &::before {
+          color: $light;
+          outline-color: $accent-blue;
+        }
+      }
+
+      &--vip {
+        &:hover {
+          &::before {
+            outline-color: $accent-green;
+          }
+        }
+      }
+    }
+  }
+
+  &__label:has(input[type="checkbox"]:checked) {
+    background-color: $gray--700;
+
+    &::before {
+      color: $light;
+      outline-color: $gray--700;
+    }
+  }
+
+  &__label:has(input[type="checkbox"]:disabled) {
+    background-color: $gray--700;
+    pointer-events: none;
+  }
+
+  &__label:has(input[type="checkbox"]:checked:disabled) {
+    background-color: $gray--700;
+    pointer-events: none;
+
+    &::before {
+      color: $gray--400;
+      outline-color: transparent;
+    }
+  }
 }

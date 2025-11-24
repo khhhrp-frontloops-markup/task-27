@@ -21,27 +21,13 @@ p {
 }
 
 body {
+  display: flex;
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: #303d4e;
   font-size: 1.6rem;
-  align-content: center;
-  justify-items: center;
   min-height: 100dvh;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 0.1rem;
-  height: 0.1rem;
-  margin: -0.1rem;
-  border: 0;
-  padding: 0;
-  white-space: nowrap;
-  clip-path: inset(100%);
-  clip: rect(0 0 0 0);
-  overflow: hidden;
 }
 
 $gray--900: #25262b;
@@ -61,6 +47,7 @@ $accent-green: #82cf68;
   width: 100%;
   background-color: $gray--900;
   border-radius: 0.4rem;
+  margin: auto;
   padding: 2rem;
   color: $light;
   box-shadow: 0.1rem 0.3rem 1.4rem 0.3rem rgba($dark, 0.3);
@@ -245,8 +232,7 @@ $accent-green: #82cf68;
 
   &__screen {
     margin-inline: 6rem;
-    overflow: hidden;
-    height: 8rem;
+    aspect-ratio: 6;
     box-shadow: 0 0.5rem 1.3rem 0 rgba($light, 0.3);
     transform: rotateX(-3deg);
 
@@ -261,6 +247,7 @@ $accent-green: #82cf68;
   &__grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
+    align-content: start;
     margin-inline: 3rem;
     padding-top: 3rem;
     gap: 2rem;
@@ -296,78 +283,55 @@ $accent-green: #82cf68;
       grid-column: -2;
     }
   }
+}
 
-  &__label {
-    display: block;
-    position: relative;
+.seat {
+  --default-accent-color: #{$accent-blue};
+  appearance: none;
+  margin: 0;
+  counter-increment: seat 1;
+
+  &::before {
+    content: counter(seat);
+    display: grid;
+    place-items: center;
+    color: var(--seat-color, transparent);
     width: 2rem;
-    border-radius: 50%;
-    background-color: $accent-blue;
     aspect-ratio: 1;
-    grid-row: 1;
-    counter-increment: seat 1;
-    transition: background-color 200ms ease;
+    border-radius: 50%;
+    background-color: var(--seat-background, var(--default-accent-color));
+    outline-style: solid;
+    outline-width: 0.2rem;
+    outline-offset: 0.3rem;
+    outline-color: var(--seat-outline, transparent);
+    transition-property: background-color, color, outline-color;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+  }
 
-    &::before {
-      content: counter(seat);
-      position: absolute;
-      inset: 0;
-      color: transparent;
-      text-align: center;
-      border-radius: inherit;
-      outline-color: transparent;
-      outline-offset: 0.3rem;
-      outline-style: solid;
-      transition-property: color, outline-color;
-      transition-duration: 200ms;
-      transition-timing-function: ease;
-    }
-
-    &--vip {
-      background-color: $accent-green;
-    }
-
-    @media (hover: hover) {
+  @media (hover: hover) {
+    &:not(:disabled) {
       cursor: pointer;
 
       &:hover {
-        &::before {
-          color: $light;
-          outline-color: $accent-blue;
-        }
-      }
-
-      &--vip {
-        &:hover {
-          &::before {
-            outline-color: $accent-green;
-          }
-        }
+        --seat-color: #{$light};
+        --seat-outline: var(--seat-background, var(--default-accent-color));
       }
     }
   }
 
-  &__label:has(input[type="checkbox"]:checked) {
-    background-color: $gray--700;
-
-    &::before {
-      color: $light;
-      outline-color: $gray--700;
-    }
+  &:disabled {
+    --seat-background: #{$gray--700};
+    opacity: 0.3;
   }
 
-  &__label:has(input[type="checkbox"]:disabled) {
-    background-color: $gray--700;
-    pointer-events: none;
+  &:checked {
+    --seat-background: #{$gray--700};
+    --seat-color: #{$light};
+    --seat-outline: var(--seat-background);
   }
 
-  &__label:has(input[type="checkbox"]:checked:disabled) {
-    background-color: $gray--700;
-    pointer-events: none;
-
-    &::before {
-      color: $gray--400;
-      outline-color: transparent;
-    }
+  &--vip {
+    --seat-background: #{$accent-green};
   }
 }
